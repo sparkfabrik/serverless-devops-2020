@@ -2,9 +2,12 @@ uname_S := $(shell uname -s)
 
 .PHONY: build
 
-all: build
+all: build fe-start
 
 build: fe-install
+
+fe-start:
+	cd frontend && npm start
 
 fe-install:
 	cd frontend && npm install

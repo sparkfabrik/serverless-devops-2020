@@ -7,6 +7,7 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: ${env:AWS_DEFAULT_REGION}
+  stage: ${env:STAGE}
 
 resources:
   Resources:
@@ -14,9 +15,10 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         AccessControl: PublicRead
-        BucketName: ${self:custom.siteName}
+        BucketName: ${self:custom.bucketName}
         WebsiteConfiguration:
           IndexDocument: index.html
+          ErrorDocument: index.html
     ProfileAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
@@ -41,10 +43,10 @@ resources:
                 ]
 
 custom:
-  siteName: serverless-profile-app
+  bucketName: profile-app-${env:STAGE}
   scripts:
     hooks:
       'package:initialize': npm run build
   s3Sync:
-    - bucketName: ${self:custom.siteName}
+    - bucketName: ${self:custom.bucketName}
       localDir: dist/profile
