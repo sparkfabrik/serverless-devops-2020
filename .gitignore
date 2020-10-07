@@ -1,0 +1,8 @@
+.DS_Store
+.vscode/*
+.idea
+.env
+exit_code
+frontend/node_modules
+frontend/dist
+frontend/.serverless
