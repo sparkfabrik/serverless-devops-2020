@@ -1,0 +1,19 @@
+<div class="container">
+<mat-card class="profile-card">
+  <mat-card-header>
+    <div mat-card-avatar>
+      <mat-icon>account_circle</mat-icon>
+    </div>
+    <mat-card-title><h1>{{ profile.firstName }} {{ profile.lastName }}</h1></mat-card-title>
+    <mat-card-subtitle *ngIf="profile.role">{{ profile.role }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>{{ profile.bio }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button>LIKE</button>
+    <button mat-button>SHARE</button>
+    <button mat-button [routerLink]="['/profiles']">BACK</button>
+  </mat-card-actions>
+</mat-card>
+</div>
