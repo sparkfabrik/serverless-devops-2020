@@ -3,6 +3,8 @@
 .idea
 .env
 exit_code
+backend/node_modules
+backend/apis/.serverless/
 frontend/node_modules
 frontend/dist
 frontend/.serverless
