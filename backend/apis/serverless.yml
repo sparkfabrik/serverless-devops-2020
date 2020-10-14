@@ -11,17 +11,19 @@ provider:
   timeout: 30
   environment:
     DYNAMODB_PROFILES_TABLE: 'Profiles'
+    CORS_VALID_ORIGINS: '*'
   iamRoleStatements:
-    - Effect: "Allow"
+    - Effect: 'Allow'
       Action:
-        - "xray:PutTraceSegments"
-        - "xray:PutTelemetryRecords"
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
       Resource:
-        - "*"
+        - '*'
     - Effect: Allow
       Action:
         - 'dynamodb:GetItem'
         - 'dynamodb:Query'
+        - 'dynamodb:PutItem'
       Resource:
         - >-
           arn:aws:dynamodb:${opt:region,self:provider.region}:*:table/${self:provider.environment.DYNAMODB_PROFILES_TABLE}
@@ -29,8 +31,10 @@ provider:
           arn:aws:dynamodb:${opt:region,self:provider.region}:*:table/${self:provider.environment.DYNAMODB_PROFILES_TABLE}/index/*
 functions:
   listProfiles:
-    description: "List public profiles"
+    description: 'List public profiles'
     handler: listProfiles.handler
+    environment:
+      CORS_VALID_METHODS: OPTIONS,GET
     events:
       - http:
           path: profile/list
@@ -39,8 +43,10 @@ functions:
           path: profile/list
           method: options
   getProfile:
-    description: "Get public profile"
+    description: 'Get public profile'
     handler: getProfile.handler
+    environment:
+      CORS_VALID_METHODS: OPTIONS,GET
     events:
       - http:
           path: profile/{id}
@@ -56,6 +62,18 @@ functions:
             parameters:
               paths:
                 id: true
+  createProfile:
+    description: 'Create profile'
+    handler: createProfile.handler
+    environment:
+      CORS_VALID_METHODS: OPTIONS,POST
+    events:
+      - http:
+          path: profile
+          method: post
+      - http:
+          path: profile
+          method: options
 
 resources:
   Resources:

@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PublicProfilesComponent } from './modules/profile/components/public-profiles/public-profiles.component';
 import { PublicProfileComponent } from './modules/profile/components/public-profile/public-profile.component';
 import { ProfileResolver } from './modules/profile/services/profile/profile-resolver.service';
+import { CreateProfileComponent } from './modules/profile/components/create-profile/create-profile.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,10 @@ const routes: Routes = [
     resolve: {
       Profile: ProfileResolver,
     },
+  },
+  {
+    path: 'create',
+    component: CreateProfileComponent,
   },
   { path: '', redirectTo: '/profiles', pathMatch: 'full' },
 ];

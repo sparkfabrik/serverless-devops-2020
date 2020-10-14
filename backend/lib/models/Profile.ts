@@ -7,8 +7,9 @@ export class Profile {
   lastName: string;
   bio?: string;
   role?: string;
+  createdOn: number;
 
-  constructor(source?: { [key: string]: string }) {
+  constructor(source?: { [key: string]: string | number }) {
     if (source) {
       this.id = source.id as string;
       this.userId = source.userId as string;
@@ -17,6 +18,7 @@ export class Profile {
       this.lastName = source.lastName as string;
       this.role = source.role as string;
       this.bio = source.bio as string;
+      this.createdOn = source.createdOn as number;
     }
   }
 

@@ -1,4 +1,4 @@
-export const FromEnvironment = function(variable: string): string {
+export function FromEnvironment (variable: string): string {
   const result = process.env[variable];
   if (result !== undefined) {
     return result;

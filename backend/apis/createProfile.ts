@@ -2,6 +2,7 @@ import { SimpleFactory } from '../lib/SimpleFactory';
 import { ProfileRepository } from '../lib/ProfileRepository';
 import { FromEnvironment } from '../lib/Configuration';
 import { getCORSHeaders } from '../lib/Utlities';
+import { Profile } from '../lib/models/Profile';
 
 const repository = new ProfileRepository(
   SimpleFactory.DynamoClient(),
@@ -9,16 +10,26 @@ const repository = new ProfileRepository(
 );
 
 exports.handler = async function (event: AWSLambda.APIGatewayProxyEvent, context: AWSLambda.Context, callback: AWSLambda.Callback) {
+  if (event.httpMethod === 'OPTIONS') {
+    callback(null, {
+      statusCode: 200,
+      headers: getCORSHeaders(),
+      body: ''
+    });
+  }
   try {
-    if (!event.pathParameters || !event.pathParameters.id) {
+    if (!event.body) {
       throw new Error('Invalid request');
     }
-    const profileId = event.pathParameters.id;
-    const profile = await repository.Get(profileId);
+    const profile = new Profile(JSON.parse(event.body));
+    if (!profile.firstName || !profile.lastName) {
+      throw new Error('Invalid request');
+    }
+    const newProfile = await repository.Create(profile);
     const response: AWSLambda.APIGatewayProxyResult = {
       statusCode: 200,
       headers: getCORSHeaders(),
-      body: JSON.stringify(profile),
+      body: JSON.stringify(newProfile)
     };
     callback(null, response);
   } catch (err) {
