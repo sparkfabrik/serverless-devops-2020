@@ -19,10 +19,10 @@
         <mat-label>Role</mat-label>
         <input matInput type="text" formControlName="role" name="role" />
       </mat-form-field>
-      <div class="buttons">
+      <mat-card-actions>
         <mat-progress-bar *ngIf="saving === true" mode="indeterminate"></mat-progress-bar>
         <button mat-raised-button color="primary" (click)="save()" [disabled]="!profileForm.valid || saving === true">Save</button>
-      </div>
+      </mat-card-actions>
     </form>
   </mat-card>
 </div>

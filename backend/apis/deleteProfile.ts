@@ -21,11 +21,11 @@ exports.handler = async function (event: AWSLambda.APIGatewayProxyEvent, context
       throw new Error('Invalid request');
     }
     const profileId = event.pathParameters.id;
-    const profile = await repository.Get(profileId);
+    await repository.Delete(profileId);
     const response: AWSLambda.APIGatewayProxyResult = {
       statusCode: 200,
       headers: getCORSHeaders(),
-      body: JSON.stringify(profile),
+      body: '',
     };
     callback(null, response);
   } catch (err) {

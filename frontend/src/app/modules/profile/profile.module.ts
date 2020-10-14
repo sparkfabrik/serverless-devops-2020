@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { PublicProfilesComponent } from './components/public-profiles/public-profiles.component';
 import { PublicProfileComponent } from './components/public-profile/public-profile.component';
 import { CreateProfileComponent } from './components/create-profile/create-profile.component';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 import { ProfileService } from './services/profile/profile.service';
 import { ProfileResolver } from './services/profile/profile-resolver.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,7 +32,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   declarations: [
     PublicProfilesComponent,
     PublicProfileComponent,
-    CreateProfileComponent
+    CreateProfileComponent,
+    UpdateProfileComponent
   ],
   providers: [
     ProfileService,
@@ -40,7 +42,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   exports: [
     PublicProfilesComponent,
     PublicProfileComponent,
-    CreateProfileComponent
+    CreateProfileComponent,
+    UpdateProfileComponent
   ],
 })
 export class ProfileModule { }

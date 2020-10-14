@@ -4,6 +4,7 @@ import { PublicProfilesComponent } from './modules/profile/components/public-pro
 import { PublicProfileComponent } from './modules/profile/components/public-profile/public-profile.component';
 import { ProfileResolver } from './modules/profile/services/profile/profile-resolver.service';
 import { CreateProfileComponent } from './modules/profile/components/create-profile/create-profile.component';
+import { UpdateProfileComponent } from './modules/profile/components/update-profile/update-profile.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,13 @@ const routes: Routes = [
   {
     path: 'profile/:id',
     component: PublicProfileComponent,
+    resolve: {
+      Profile: ProfileResolver,
+    },
+  },
+  {
+    path: 'profile/:id/edit',
+    component: UpdateProfileComponent,
     resolve: {
       Profile: ProfileResolver,
     },
