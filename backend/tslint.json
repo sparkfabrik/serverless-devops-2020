@@ -1,0 +1,44 @@
+{
+  "defaultSeverity": "error",
+  "rules": {
+    "no-any": false,
+    "arrow-return-shorthand": true,
+    "class-name": true,
+    "comment-format": [true, "check-space"],
+    "cyclomatic-complexity": {
+      "options": [6],
+      "severity": "warning"
+    },
+    "curly": true,
+    "eofline": true,
+    "import-spacing": true,
+    "indent": [true, "spaces", 2],
+    "max-line-length": [true, 140],
+    "no-console": true,
+    "no-duplicate-imports": true,
+    "no-import-side-effect": true,
+    "no-invalid-template-strings": true,
+    "no-string-throw": true,
+    "no-unsafe-finally": true,
+    "no-var-keyword": true,
+    "no-shadowed-variable": true,
+    "no-unused-expression": true,
+    "prefer-const": true,
+    "semicolon": [true, "always", "ignore-bound-class-methods"],
+    "strict-type-predicates": true,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": {
+          "objects": "always",
+          "arrays": "always",
+          "functions": "never",
+          "typeLiterals": "ignore"
+        },
+        "esSpecCompliant": true
+      }
+    ],
+    "triple-equals": [true, "allow-null-check"]
+  },
+  "extends": ["tslint-config-prettier"]
+}

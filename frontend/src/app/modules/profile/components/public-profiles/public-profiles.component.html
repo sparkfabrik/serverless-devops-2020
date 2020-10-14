@@ -1,0 +1,13 @@
+<div class="container">
+  <mat-card class="profile-card" *ngFor="let profile of profiles">
+    <mat-card-header>
+      <div mat-card-avatar>
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <mat-card-title><a [routerLink]="['/profile', profile.id]">{{ profile.firstName }} {{ profile.lastName }}</a></mat-card-title>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-button [routerLink]="['/profile', profile.id]">VIEW</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
