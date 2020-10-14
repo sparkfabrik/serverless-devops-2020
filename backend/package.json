@@ -8,7 +8,8 @@
     "lint-fix": "tslint --project tsconfig.json --fix",
     "compile": "tsc -p .",
     "local": "sls offline start --stage=local --region=local",
-    "deploy": "cd apis && sls deploy -v"
+    "deploy": "sls deploy -v",
+    "remove": "sls remove -v"
   },
   "dependencies": {
     "aws-sdk": "2.342.0",

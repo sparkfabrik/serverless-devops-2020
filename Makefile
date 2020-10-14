@@ -12,6 +12,9 @@ be-install:
 be-deploy:
 	cd backend && npm run deploy
 
+be-remove: fe-install
+	cd backend && npm run remove
+
 fe-start:
 	cd frontend && npm start
 
