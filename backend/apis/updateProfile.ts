@@ -17,10 +17,7 @@ exports.handler = async function (event: AWSLambda.APIGatewayProxyEvent, context
     });
   }
   try {
-    if (!event.pathParameters || !event.pathParameters.id) {
-      throw new Error('Invalid request');
-    }
-    if (!event.body) {
+    if (!event.pathParameters || !event.pathParameters.id || !event.body) {
       throw new Error('Invalid request');
     }
     const profileId = event.pathParameters.id;

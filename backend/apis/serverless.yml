@@ -25,6 +25,7 @@ provider:
         - 'dynamodb:Query'
         - 'dynamodb:PutItem'
         - 'dynamodb:UpdateItem'
+        - 'dynamodb:DeleteItem'
       Resource:
         - >-
           arn:aws:dynamodb:${opt:region,self:provider.region}:*:table/${self:provider.environment.DYNAMODB_PROFILES_TABLE}
@@ -47,7 +48,7 @@ functions:
     description: 'Get public profile'
     handler: getProfile.handler
     environment:
-      CORS_VALID_METHODS: OPTIONS,GET
+      CORS_VALID_METHODS: OPTIONS,GET,PUT,DELETE
     events:
       - http:
           path: profile/{id}
@@ -79,7 +80,7 @@ functions:
     description: 'Update profile'
     handler: updateProfile.handler
     environment:
-      CORS_VALID_METHODS: OPTIONS,PUT
+      CORS_VALID_METHODS: OPTIONS,GET,PUT,DELETE
     events:
       - http:
           path: profile/{id}
@@ -88,13 +89,15 @@ functions:
             parameters:
               paths:
                 id: true
+  deleteProfile:
+    description: 'Delete profile'
+    handler: deleteProfile.handler
+    environment:
+      CORS_VALID_METHODS: OPTIONS,GET,PUT,DELETE
+    events:
       - http:
           path: profile/{id}
-          method: options
-          request:
-            parameters:
-              paths:
-                id: true
+          method: delete
 
 resources:
   Resources:

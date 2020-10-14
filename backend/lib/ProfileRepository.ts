@@ -76,4 +76,13 @@ export class ProfileRepository {
     const profile = new Profile(data.Attributes);
     return profile;
   }
+
+  async Delete(id: string): Promise<void> {
+    const params: AWS.DynamoDB.DocumentClient.DeleteItemInput = {
+      TableName: this.table,
+      Key: { id: id }
+    };
+    await this.client.delete(params).promise();
+    return;
+  }
 }
