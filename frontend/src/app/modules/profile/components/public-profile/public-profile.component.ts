@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProfileService } from '../../services/profile/profile.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -13,7 +12,7 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   loading = true;
   private routeSub: Subscription;
 
-  constructor(private route: ActivatedRoute, private profileService: ProfileService) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.routeSub = this.route.data.subscribe((data: { Profile }) => {

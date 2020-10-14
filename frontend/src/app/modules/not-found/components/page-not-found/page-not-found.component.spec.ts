@@ -1,7 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageNotFoundComponent } from './page-not-found.component';
 import { RouterTestingModule } from '@angular/router/testing';
-import { environment } from '../../../../../environments/environment';
 
 describe('PageNotFoundComponent', () => {
   let component: PageNotFoundComponent;
@@ -26,16 +25,4 @@ describe('PageNotFoundComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('showGoToHome should be equal to false', () => {
-    component.showGoToHomeButton();
-    expect(component.showGoToHome).toBe(false);
-    expect(component.goToHomeLink).toEqual('/');
-  });
-
-  it('showGoToHome should be equal to true', () => {
-    sessionStorage.setItem(environment.homePageKey, 'LondonStockExchange');
-    component.showGoToHomeButton();
-    expect(component.showGoToHome).toBe(true);
-    expect(component.goToHomeLink).toEqual('/LondonStockExchange');
-  });
 });
