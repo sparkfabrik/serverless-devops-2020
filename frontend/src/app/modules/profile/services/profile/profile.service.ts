@@ -8,11 +8,15 @@ export class ProfileService {
   constructor(private http: HttpClient) {}
 
   listPublicProfiles(): Observable<any> {
-    return this.http.get<any>(`${environment.apiBaseUrl}/dev/profile/list`);
+    return this.http.get<any>(`${environment.apiBaseUrl}/profile/list`);
   }
 
   getPublicProfile(id: string): Observable<any> {
-    return this.http.get<any>(`${environment.apiBaseUrl}/dev/profile/${id}`);
+    return this.http.get<any>(`${environment.apiBaseUrl}/profile/${id}`);
+  }
+
+  createProfile(body: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiBaseUrl}/profile`, body);
   }
 
 }

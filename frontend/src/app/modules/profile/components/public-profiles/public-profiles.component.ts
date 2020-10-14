@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProfileService } from '../../services/profile/profile.service';
-import { finalize, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-public-profiles',
@@ -11,31 +11,26 @@ import { Subject } from 'rxjs';
 export class PublicProfilesComponent implements OnInit, OnDestroy {
   profiles: object[];
   loading = true;
-  private ngUnsubscribe = new Subject();
+  private sub: Subscription;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService) { }
 
   ngOnInit(): void {
     this.loadProfiles();
   }
 
   ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   loadProfiles(): void {
-    this.profileService
+    this.sub = this.profileService
       .listPublicProfiles()
-      .pipe(
-        finalize(() => (this.loading = false)),
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(finalize(() => this.loading = false))
       .subscribe(
-        (response: any) => {
-          this.profiles = response.data;
-          console.log(this.profiles)
-        },
+        (response: any) => this.profiles = response.data,
         (error) => console.error(error)
       );
   }

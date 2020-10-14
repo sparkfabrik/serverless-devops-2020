@@ -12,12 +12,11 @@ export class PublicProfileComponent implements OnInit, OnDestroy {
   loading = true;
   private routeSub: Subscription;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.routeSub = this.route.data.subscribe((data: { Profile }) => {
       this.profile = data.Profile;
-      console.log(this.profile);
     });
   }
 
