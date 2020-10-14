@@ -24,7 +24,7 @@ exports.handler = async function (event: AWSLambda.APIGatewayProxyEvent, context
     if (!event.queryStringParameters || !event.queryStringParameters.key) {
       throw new Error('Invalid request');
     }
-    const url = await s3Service.GetSignedUrl(FromEnvironment('ASSETS_BUCKET'), event.queryStringParameters.key, 40 * 60);
+    const url = await s3Service.GetSignedUrl(FromEnvironment('ASSETS_BUCKET'), event.queryStringParameters.key, 180);
     const response: AWSLambda.APIGatewayProxyResult = {
       statusCode: 200,
       headers: getCORSHeaders(),

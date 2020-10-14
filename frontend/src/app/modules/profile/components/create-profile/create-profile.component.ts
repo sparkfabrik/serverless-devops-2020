@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ProfileService } from '../../services/profile/profile.service';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-profile',
@@ -13,7 +13,8 @@ export class CreateProfileComponent implements OnInit, OnDestroy {
   profile;
   saving = false;
   profileForm: FormGroup;
-  private sub: Subscription;
+  private ngUnsubscribe = new Subject<void>();
+  file: File;
 
   constructor(private formBuilder: FormBuilder, private profileService: ProfileService) { }
 
@@ -22,9 +23,8 @@ export class CreateProfileComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   buildForm(): void {
@@ -41,12 +41,25 @@ export class CreateProfileComponent implements OnInit, OnDestroy {
     this.saving = true;
     const form = this.profileForm.value;
     this.saving = true;
-    this.sub = this.profileService.createProfile(form)
-      .pipe(finalize(() => this.saving = false))
+    this.profileService.createProfile(form)
+      .pipe(finalize(() => this.saving = false), takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
       }, error => {
         console.error(error.message);
       });
+  }
+
+  fileLoad(event: Event): void {
+    const file = (event.target as HTMLInputElement).files[0];
+    this.file = file;
+  }
+
+  async uploadFile(): Promise<void> {
+    this.saving = true;
+    const fileuploadurl = await this.profileService.getSignedUrl(this.file.name);
+    this.profileService.uploadFile(fileuploadurl, this.file)
+      .pipe(finalize(() => this.saving = false), takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {});
   }
 
 }
