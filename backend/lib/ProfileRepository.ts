@@ -1,4 +1,5 @@
 import { Profile } from './models/Profile';
+import * as uuid from 'uuid';
 
 export class ProfileRepository {
   constructor(
@@ -35,6 +36,18 @@ export class ProfileRepository {
     };
     const data = await this.client.query(params).promise();
     return data.Items ? data.Items.map(item => new Profile(item)) : [];
+  }
+
+  async Create(item: Profile): Promise<Profile> {
+    item.id = uuid.v4();
+    item.status = 'preview';
+    item.createdOn = Date.now();
+    const params: AWS.DynamoDB.DocumentClient.PutItemInput = {
+      TableName: this.table,
+      Item: item,
+    };
+    await this.client.put(params).promise();
+    return item;
   }
 
 }

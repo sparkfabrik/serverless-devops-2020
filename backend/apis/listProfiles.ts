@@ -1,6 +1,7 @@
 import { SimpleFactory } from '../lib/SimpleFactory';
 import { ProfileRepository } from '../lib/ProfileRepository';
 import { FromEnvironment } from '../lib/Configuration';
+import { getCORSHeaders } from '../lib/Utlities';
 
 const repository = new ProfileRepository(
   SimpleFactory.DynamoClient(),
@@ -12,10 +13,7 @@ exports.handler = async function (event: AWSLambda.APIGatewayProxyEvent, context
     const profiles = await repository.ListPublic();
     const response: AWSLambda.APIGatewayProxyResult = {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET,OPTIONS'
-      },
+      headers: getCORSHeaders(),
       body: JSON.stringify({
         data: profiles
       }),
