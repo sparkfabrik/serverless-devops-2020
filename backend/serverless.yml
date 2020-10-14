@@ -10,8 +10,9 @@ provider:
   memorySize: 128
   timeout: 30
   environment:
-    DYNAMODB_PROFILES_TABLE: 'Profiles'
+    DYNAMODB_PROFILES_TABLE: ${env:STAGE}-Profiles
     CORS_VALID_ORIGINS: '*'
+    ASSETS_BUCKET: profile-assets-${env:STAGE}
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
@@ -31,10 +32,15 @@ provider:
           arn:aws:dynamodb:${opt:region,self:provider.region}:*:table/${self:provider.environment.DYNAMODB_PROFILES_TABLE}
         - >-
           arn:aws:dynamodb:${opt:region,self:provider.region}:*:table/${self:provider.environment.DYNAMODB_PROFILES_TABLE}/index/*
+    - Effect: Allow
+      Action:
+        - 's3:*'
+      Resource:
+        - '*'
 functions:
   listProfiles:
     description: 'List public profiles'
-    handler: listProfiles.handler
+    handler: apis/listProfiles.handler
     environment:
       CORS_VALID_METHODS: OPTIONS,GET
     events:
@@ -46,7 +52,7 @@ functions:
           method: options
   getProfile:
     description: 'Get public profile'
-    handler: getProfile.handler
+    handler: apis/getProfile.handler
     environment:
       CORS_VALID_METHODS: OPTIONS,GET,PUT,DELETE
     events:
@@ -66,7 +72,7 @@ functions:
                 id: true
   createProfile:
     description: 'Create profile'
-    handler: createProfile.handler
+    handler: apis/createProfile.handler
     environment:
       CORS_VALID_METHODS: OPTIONS,POST
     events:
@@ -78,7 +84,7 @@ functions:
           method: options
   updateProfile:
     description: 'Update profile'
-    handler: updateProfile.handler
+    handler: apis/updateProfile.handler
     environment:
       CORS_VALID_METHODS: OPTIONS,GET,PUT,DELETE
     events:
@@ -91,13 +97,25 @@ functions:
                 id: true
   deleteProfile:
     description: 'Delete profile'
-    handler: deleteProfile.handler
+    handler: apis/deleteProfile.handler
     environment:
       CORS_VALID_METHODS: OPTIONS,GET,PUT,DELETE
     events:
       - http:
           path: profile/{id}
           method: delete
+  getSignedUrl:
+    description: 'Get S3 signed url'
+    handler: apis/getSignedUrl.handler
+    environment:
+      CORS_VALID_METHODS: OPTIONS,GET
+    events:
+      - http:
+          path: get-signed-url
+          method: get
+      - http:
+          path: get-signed-url
+          method: options
 
 resources:
   Resources:
@@ -141,7 +159,23 @@ resources:
             ProvisionedThroughput:
               ReadCapacityUnits: 1
               WriteCapacityUnits: 1
+    Assets:
+      Type: AWS::S3::Bucket
+      Properties: 
+        BucketName: ${self:provider.environment.ASSETS_BUCKET}
+        CorsConfiguration:
+          CorsRules:
+            - AllowedMethods:
+                - GET
+                - HEAD
+                - PUT
+                - POST
+                - DELETE
+              AllowedOrigins:
+                - "*"
+              AllowedHeaders:
+                - "*"
 
 custom:
   webpack:
-    webpackConfig: ../webpack.config.js
+    webpackConfig: webpack.config.js
