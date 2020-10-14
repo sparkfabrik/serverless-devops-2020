@@ -12,11 +12,11 @@ describe('UpdateProfileComponent', () => {
   let fixture: ComponentFixture<UpdateProfileComponent>;
   const fakeActivatedRoute = {
     data: {
-      subscribe: (fn: (value: Data) => void) =>
-        fn({
-          Profile: {},
-        }),
-    },
+      pipe: () => ({
+        subscribe: (fn: (value: Data) => void) =>
+          fn({ Profile: {} })
+      })
+    }
   };
 
   beforeEach(async () => {

@@ -24,6 +24,7 @@
       <mat-card-actions>
         <mat-progress-bar *ngIf="saving === true" mode="indeterminate"></mat-progress-bar>
         <button mat-raised-button color="primary" (click)="update()" [disabled]="!profileForm.valid || saving === true">Save</button>
+        <button mat-raised-button color="warn" (click)="delete()" [disabled]="saving === true">Delete</button>
       </mat-card-actions>
     </form>
   </mat-card>

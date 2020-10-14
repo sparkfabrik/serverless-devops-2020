@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
@@ -14,26 +14,30 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   profile;
   saving = false;
   profileForm: FormGroup;
-  private routeSub: Subscription;
-  private sub: Subscription;
+  private ngUnsubscribe = new Subject<void>();
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private profileService: ProfileService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private profileService: ProfileService
+  ) { }
 
   ngOnInit(): void {
     this.buildForm();
-    this.routeSub = this.route.data.subscribe((data: { Profile }) => {
-      this.profile = data.Profile;
-      this.profileForm.patchValue(this.profile);
-    });
+    this.route.data
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((data: { Profile }) => {
+        this.profile = data.Profile;
+        if (this.profile) {
+          this.profileForm.patchValue(this.profile);
+        }
+      });
   }
 
   ngOnDestroy(): void {
-    if (this.routeSub) {
-      this.routeSub.unsubscribe();
-    }
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 
   buildForm(): void {
@@ -49,12 +53,19 @@ export class UpdateProfileComponent implements OnInit, OnDestroy {
   update(): void {
     this.saving = true;
     const form = this.profileForm.value;
-    this.sub = this.profileService.updateProfile(this.profile.id, form)
-      .pipe(finalize(() => this.saving = false))
+    this.profileService.updateProfile(this.profile.id, form)
+      .pipe(finalize(() => this.saving = false), takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-      }, error => {
-        console.error(error.message);
-      });
+      }, error => console.error(error.message));
+  }
+
+  delete(): void {
+    this.saving = true;
+    this.profileService.deleteProfile(this.profile.id)
+      .pipe(finalize(() => this.saving = false), takeUntil(this.ngUnsubscribe))
+      .subscribe(() => {
+        this.router.navigate(['/profiles']);
+      }, error => console.error(error.message));
   }
 
 }

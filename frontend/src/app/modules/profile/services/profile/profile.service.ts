@@ -23,4 +23,8 @@ export class ProfileService {
     return this.http.put<any>(`${environment.apiBaseUrl}/profile/${id}`, body);
   }
 
+  deleteProfile(id: string): Observable<void> {
+    return this.http.delete<any>(`${environment.apiBaseUrl}/profile/${id}`);
+  }
+
 }
