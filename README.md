@@ -13,4 +13,4 @@
 4) make fe-start
 
 ## Deploy
-1) make fe-deploy
+1) make deploy

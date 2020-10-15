@@ -33,4 +33,4 @@ fe-deploy: fe-install
 fe-remove: fe-install
 	cd frontend && npm run remove
 
-deploy: fe-deploy
+deploy: be-deploy fe-deploy
