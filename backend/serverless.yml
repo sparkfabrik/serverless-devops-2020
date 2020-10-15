@@ -117,6 +117,16 @@ functions:
       - http:
           path: get-signed-url
           method: options
+  processFile:
+    description: 'Process uploaded file'
+    handler: s3/processFile.handler
+    events:
+      - s3:
+          bucket: ${self:provider.environment.ASSETS_BUCKET}
+          existing: true
+          event: s3:ObjectCreated:*
+          rules:
+            - suffix: .csv
 
 resources:
   Resources:

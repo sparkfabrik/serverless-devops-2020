@@ -9,17 +9,17 @@ build: be-install fe-install
 be-install:
 	cd backend && npm install
 
-be-deploy:
+be-deploy: be-install
 	cd backend && npm run deploy
 
 be-remove: be-install
 	cd backend && npm run remove
 
-fe-start:
-	cd frontend && npm start
-
 fe-install:
 	cd frontend && npm install
+
+fe-start: fe-install
+	cd frontend && npm start
 
 fe-lint: fe-install
 	cd frontend && npm run lint
