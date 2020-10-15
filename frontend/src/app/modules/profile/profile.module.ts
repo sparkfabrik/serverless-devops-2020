@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { ProfilesComponent } from './components/profiles/profiles.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { CreateProfileComponent } from './components/create-profile/create-profile.component';
+import { UpdateProfileComponent } from './components/update-profile/update-profile.component';
 import { ProfileService } from './services/profile/profile.service';
 import { ProfileResolver } from './services/profile/profile-resolver.service';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,12 +33,14 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     ProfilesComponent,
     ProfileComponent,
     CreateProfileComponent,
+    UpdateProfileComponent,
   ],
   providers: [ProfileService, ProfileResolver],
   exports: [
     ProfilesComponent,
     ProfileComponent,
     CreateProfileComponent,
+    UpdateProfileComponent,
   ],
 })
 export class ProfileModule { }

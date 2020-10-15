@@ -58,4 +58,40 @@ export class ProfileRepository {
     return item;
   }
 
+  async Update(itemId: string, delta: { [key: string]: object | string }): Promise<Profile> {
+    const params: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
+      TableName: this.table,
+      Key: { id: itemId },
+      ReturnValues: 'ALL_NEW',
+      UpdateExpression: 'SET ',
+      ExpressionAttributeNames: {},
+      ExpressionAttributeValues: {},
+    };
+    Object.getOwnPropertyNames(delta).forEach(property => {
+      params.UpdateExpression += `#${property}=:${property}, `;
+      if (params.ExpressionAttributeNames) {
+        params.ExpressionAttributeNames[`#${property}`] = property;
+      }
+      if (params.ExpressionAttributeValues) {
+        params.ExpressionAttributeValues[`:${property}`] = delta[property];
+      }
+    });
+
+    if (params.UpdateExpression) {
+      params.UpdateExpression = params.UpdateExpression.replace(/\s*,\s*$/, '');
+    }
+    const data = await this.client.update(params).promise();
+    const profile = new Profile(data.Attributes);
+    return profile;
+  }
+
+  async Delete(id: string): Promise<void> {
+    const params: AWS.DynamoDB.DocumentClient.DeleteItemInput = {
+      TableName: this.table,
+      Key: { id: id }
+    };
+    await this.client.delete(params).promise();
+    return;
+  }
+
 }

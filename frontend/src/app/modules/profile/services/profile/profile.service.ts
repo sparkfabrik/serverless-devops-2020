@@ -19,4 +19,12 @@ export class ProfileService {
     return this.http.post<any>(`${environment.apiBaseUrl}/profile`, body);
   }
 
+  updateProfile(id: string, body: object): Observable<any> {
+    return this.http.put<any>(`${environment.apiBaseUrl}/profile/${id}`, body);
+  }
+
+  deleteProfile(id: string): Observable<void> {
+    return this.http.delete<any>(`${environment.apiBaseUrl}/profile/${id}`);
+  }
+
 }

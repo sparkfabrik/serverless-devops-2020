@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ProfilesComponent } from './modules/profile/components/profiles/profiles.component';
 import { ProfileComponent } from './modules/profile/components/profile/profile.component';
 import { CreateProfileComponent } from './modules/profile/components/create-profile/create-profile.component';
+import { UpdateProfileComponent } from './modules/profile/components/update-profile/update-profile.component';
 import { ProfileResolver } from './modules/profile/services/profile/profile-resolver.service';
 
 const routes: Routes = [
@@ -13,6 +14,13 @@ const routes: Routes = [
   {
     path: 'profile/:id',
     component: ProfileComponent,
+    resolve: {
+      Profile: ProfileResolver,
+    },
+  },
+  {
+    path: 'profile/:id/edit',
+    component: UpdateProfileComponent,
     resolve: {
       Profile: ProfileResolver,
     },

@@ -11,6 +11,7 @@
     <p>{{ profile.bio }}</p>
   </mat-card-content>
   <mat-card-actions>
+    <button mat-raised-button color="primary" [routerLink]="['/profile', profile.id, 'edit']">Edit</button>
   </mat-card-actions>
 </mat-card>
 </div>
