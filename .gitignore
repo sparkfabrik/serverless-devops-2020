@@ -2,6 +2,8 @@
 .vscode/*
 .idea
 .env
+backend/node_modules
+backend/.serverless/
 frontend/node_modules
 frontend/dist
 frontend/.serverless

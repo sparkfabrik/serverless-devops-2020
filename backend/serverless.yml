@@ -1,0 +1,98 @@
+service: apis
+frameworkVersion: '2'
+plugins:
+  - serverless-webpack
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ${env:AWS_DEFAULT_REGION}
+  stage: ${env:STAGE}
+  memorySize: 128
+  timeout: 30
+  environment:
+    DYNAMODB_PROFILES_TABLE: ${env:STAGE}-Profiles
+    CORS_VALID_ORIGINS: '*'
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'xray:PutTraceSegments'
+        - 'xray:PutTelemetryRecords'
+      Resource:
+        - '*'
+    - Effect: Allow
+      Action:
+        - 'dynamodb:GetItem'
+        - 'dynamodb:Query'
+        - 'dynamodb:Scan'
+      Resource:
+        - >-
+          arn:aws:dynamodb:${opt:region,self:provider.region}:*:table/${self:provider.environment.DYNAMODB_PROFILES_TABLE}
+        - >-
+          arn:aws:dynamodb:${opt:region,self:provider.region}:*:table/${self:provider.environment.DYNAMODB_PROFILES_TABLE}/index/*
+functions:
+  listProfiles:
+    description: 'List profiles'
+    handler: apis/listProfiles.handler
+    environment:
+      CORS_VALID_METHODS: OPTIONS,GET
+    events:
+      - http:
+          path: profile/list
+          method: get
+      - http:
+          path: profile/list
+          method: options
+  getProfile:
+    description: 'Get public profile'
+    handler: apis/getProfile.handler
+    environment:
+      CORS_VALID_METHODS: OPTIONS,GET
+    events:
+      - http:
+          path: profile/{id}
+          method: get
+          request:
+            parameters:
+              paths:
+                id: true
+      - http:
+          path: profile/{id}
+          method: options
+          request:
+            parameters:
+              paths:
+                id: true
+
+resources:
+  Resources:
+    Profiles:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.DYNAMODB_PROFILES_TABLE}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: status
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: StatusIndex
+            KeySchema:
+              - AttributeName: status
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+
+custom:
+  webpack:
+    webpackConfig: webpack.config.js

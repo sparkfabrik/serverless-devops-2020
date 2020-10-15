@@ -4,7 +4,13 @@ uname_S := $(shell uname -s)
 
 all: build fe-start
 
-build: fe-install
+build: be-install fe-install
+
+be-install:
+	cd backend && npm install
+
+be-deploy:
+	cd backend && npm run deploy
 
 fe-start:
 	cd frontend && npm start

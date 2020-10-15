@@ -1,0 +1,18 @@
+.profile-card {
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.mat-card-avatar {
+  width: 40px;
+  height: 40px;
+  .mat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 40px;
+  }
+}
+
+.mat-card-header .mat-card-title {
+  margin: 7px 0;
+}
