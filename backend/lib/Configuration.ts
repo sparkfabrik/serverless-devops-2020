@@ -3,6 +3,6 @@ export function FromEnvironment (variable: string): string {
   if (result !== undefined) {
     return result;
   }
-  console.log(`ERROR : Unable to find environment variable ${variable} [Environment Configuration Failure]`);
+  console.error(`ERROR : Unable to find environment variable ${variable} [Environment Configuration Failure]`);
   return '';
-};
+}

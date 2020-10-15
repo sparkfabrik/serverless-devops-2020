@@ -14,7 +14,7 @@
     "import-spacing": true,
     "indent": [true, "spaces", 2],
     "max-line-length": [true, 140],
-    "no-console": true,
+    "no-console": [true, "log"],
     "no-duplicate-imports": true,
     "no-import-side-effect": true,
     "no-invalid-template-strings": true,
@@ -39,6 +39,5 @@
       }
     ],
     "triple-equals": [true, "allow-null-check"]
-  },
-  "extends": ["tslint-config-prettier"]
+  }
 }

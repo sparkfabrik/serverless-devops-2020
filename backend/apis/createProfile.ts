@@ -14,7 +14,7 @@ exports.handler = async function (event: AWSLambda.APIGatewayProxyEvent, context
     callback(null, {
       statusCode: 200,
       headers: getCORSHeaders(),
-      body: ''
+      body: '',
     });
   }
   try {
@@ -29,11 +29,11 @@ exports.handler = async function (event: AWSLambda.APIGatewayProxyEvent, context
     const response: AWSLambda.APIGatewayProxyResult = {
       statusCode: 200,
       headers: getCORSHeaders(),
-      body: JSON.stringify(newProfile)
+      body: JSON.stringify(newProfile),
     };
     callback(null, response);
   } catch (err) {
     console.error(err);
     callback(new Error(err.message));
   }
-}
+};

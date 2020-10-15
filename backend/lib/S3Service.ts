@@ -11,7 +11,7 @@ export class S3Service {
       const params = {
         Bucket: bucket,
         Key: key,
-        Expires: expireTime
+        Expires: expireTime,
       };
       this.s3Client.getSignedUrl('putObject', params, (error, url) => {
         if (error) {

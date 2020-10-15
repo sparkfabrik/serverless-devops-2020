@@ -9,6 +9,9 @@ build: be-install fe-install
 be-install:
 	cd backend && npm install
 
+be-lint: be-install
+	cd backend && npm run lint
+
 be-deploy: be-install
 	cd backend && npm run deploy
 

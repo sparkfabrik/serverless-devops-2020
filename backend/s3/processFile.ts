@@ -20,12 +20,12 @@ exports.handler = async function (event: AWSLambda.S3CreateEvent, context: AWSLa
       const profile = new Profile(data[i]);
       if (!profile.firstName || !profile.lastName) {
         continue;
-      };
+      }
       await repository.Create(data[i] as Profile);
     }
-    return
+    return;
   } catch (err) {
     console.error(err);
     throw new Error(err.message);
   }
-}
+};

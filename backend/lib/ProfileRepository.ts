@@ -12,7 +12,7 @@ export class ProfileRepository {
       TableName: this.table,
       Key: {
         id: queryId,
-      }
+      },
     };
     const data = await this.client.get(params).promise();
     if (!data.Item) {
@@ -88,7 +88,7 @@ export class ProfileRepository {
   async Delete(id: string): Promise<void> {
     const params: AWS.DynamoDB.DocumentClient.DeleteItemInput = {
       TableName: this.table,
-      Key: { id: id }
+      Key: { id: id },
     };
     await this.client.delete(params).promise();
     return;
