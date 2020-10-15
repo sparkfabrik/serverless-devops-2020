@@ -1,0 +1,36 @@
+* { margin: 0; padding: 0 }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #3f7fb5ab;
+}
+
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  box-sizing: border-box;
+}
+
+mat-card {
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+.input-full-width {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+mat-progress-bar {
+  margin-bottom: 25px;
+}
+
+.mat-card-actions {
+  margin: 0 !important;
+}
