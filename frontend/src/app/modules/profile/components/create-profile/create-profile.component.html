@@ -1,0 +1,28 @@
+<div class="container">
+  <mat-card>
+    <form [formGroup]="profileForm">
+      <mat-form-field class="input-full-width">
+        <mat-label>First name</mat-label>
+        <input matInput type="text" formControlName="firstName" name="firstName" required />
+        <mat-error *ngIf="profileForm.get('firstName').hasError('required')">This field is mandatory</mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>Last name</mat-label>
+        <input matInput type="text" formControlName="lastName" name="lastName" required />
+        <mat-error *ngIf="profileForm.get('lastName').hasError('required')">This field is mandatory</mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>Bio</mat-label>
+        <input matInput type="text" formControlName="bio" name="bio" />
+      </mat-form-field>
+      <mat-form-field class="input-full-width">
+        <mat-label>Role</mat-label>
+        <input matInput type="text" formControlName="role" name="role" />
+      </mat-form-field>
+      <mat-card-actions>
+        <mat-progress-bar *ngIf="saving === true" mode="indeterminate"></mat-progress-bar>
+        <button mat-raised-button color="primary" (click)="save()" [disabled]="!profileForm.valid || saving === true">Save</button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

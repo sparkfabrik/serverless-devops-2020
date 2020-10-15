@@ -15,4 +15,8 @@ export class ProfileService {
     return this.http.get<any>(`${environment.apiBaseUrl}/profile/${id}`);
   }
 
+  createProfile(body: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiBaseUrl}/profile`, body);
+  }
+
 }
